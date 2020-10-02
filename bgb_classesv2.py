@@ -9,8 +9,8 @@ class Player:
 
     def __str__(self):
         if self.fav_color == "blue":
-            return f"Hi {self.name}! My favorite color is also blue!"
-        return f"Hi {self.name}! {self.fav_color} is an awesome color!"
+            return f"Hi {self.name} 😉! My favorite color is also blue 🐬!"
+        return f"Hi {self.name} 😉! I think {self.fav_color} is an awesome color 🎨!"
 
 
 # Forming a repeatable stack structure
@@ -27,7 +27,7 @@ class Stack:
             if self.height > 0:
                 self.height -= 1
             else:
-                return "Stack is empty."
+                return "Stack is empty. 😯"
 
     def __str__(self):
         return "l" * self.height
@@ -78,7 +78,7 @@ game_end = False
 # Increment token to not ask about winning the game before round 5
 i = 0
 while not game_end:
-    print(host_name + ", send game picture.")
+    print(host_name + ", send game picture. 📷")
     # Spacer input ask that can take any text
     input("Did you send the picture? ")
     print(player1.name + ": " + player1.color)
@@ -90,12 +90,12 @@ while not game_end:
     print(host_name + ", make the move.")
     i += 1
     # Double confirmed decision to leave the game
-    continue_game = input("Would you like to keep playing? (y/n) \n")
-    if continue_game == 'n' and input("Are you sure you want to end the game? (y/n) ") == 'y':
+    continue_game = input("Would you like to keep playing? (y/n) 🎲 ")
+    if continue_game == 'n' and input("\n Are you sure you want to end the game? ❌ (y/n) ") == 'y':
         game_end = True
     if i > 4:
-        won_game = input("Has anyone won yet? (y/n) ")
-        if won_game == 'y' and input("Really? (y/n) ") == 'y':
+        won_game = input("Has anyone won yet? 👑 (y/n) ")
+        if won_game == 'y' and input("Really? 😲 (y/n) ") == 'y':
             game_end = True
 else:
-    "Thanks for playing the game!"
+    "Thanks for playing the game! 💙"
