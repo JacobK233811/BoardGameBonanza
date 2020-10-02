@@ -77,14 +77,14 @@ else:
 game_end = False
 # Increment token to not ask about winning the game before round 5
 i = 0
-print('''Your goal in Gobblet Gobblers is to place three of your pieces in a horizontal, vertical or diagonal row. 
+print('''Your goal in Gobblet Gobblers is to place four of your pieces in a horizontal, vertical or diagonal row. 
 Your pieces can stack on top of each other and they start the game nested, off the board. 
 On a turn, you either play one exposed piece from your three off-the-board piles or move one piece on the board to any other spot on the board where it fits. 
 A larger piece can cover any smaller piece.
 
 Your memory is tested as you try to remember which color one of your larger pieces is covering before you move it. 
-As soon as a player has three like-colored pieces in a row, he wins — except in one case: 
-If you lift your piece and reveal an opponent's piece that finishes a three-in-a-row, you don't immediately lose; 
+As soon as a player has four like-colored pieces in a row, he wins — except in one case: 
+If you lift your piece and reveal an opponent's piece that finishes a four-in-a-row, you don't immediately lose; 
 you can't return the piece to its starting location, but if you can place it over one of the opponent's two other pieces in that row, the game continues.\n''')
 while not game_end:
     print(host_name + ", send game picture. 📷")
