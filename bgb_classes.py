@@ -3,10 +3,9 @@ bot_fav_color = "blue"
 
 
 class Player:
-    def __init__(self, name, fav_color, ab):
+    def __init__(self, name, fav_color):
         self.name = name
         self.fav_color = fav_color
-        self.ab = ab
 
     def __str__(self):
         if self.fav_color == "blue":
@@ -26,9 +25,9 @@ class Stack:
 
 # To give the player 3 stacks of 4 pieces and identify whether they are playing as white or black
 class GobletPlayer(Player):
-    def __init__(self, name, fav_color, ab, wb):
+    def __init__(self, name, fav_color, wb):
         self.color = wb
-        self.stack_a = Stack(ab + 'a')
-        self.stack_b = Stack(ab + 'b')
-        self.stack_c = Stack(ab + 'c')
-        super.__init__(name, fav_color, ab)
+        self.stack_a = Stack(name + '_a')
+        self.stack_b = Stack(name + '_b')
+        self.stack_c = Stack(name + '_c')
+        super.__init__(name, fav_color)
