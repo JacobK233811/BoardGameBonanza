@@ -25,8 +25,8 @@ class Stack:
         self.abc = abc
 
     def move_piece(self):
-        row, col = [int(value) for value in input("Please tell the host your move in row#,col# format. ").split(',')]
-        if not -1 < row < 5 or not -1 < col < 5:
+        row, col = input("Please tell the host your move in row#,col# format. ").split(',')]
+        if not -1 < int(row) < 5 or not -1 < int(col) < 5:
             self.move_piece()
         else:
             if self.height > 0:
