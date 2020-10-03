@@ -11,11 +11,17 @@ class Player:
     def __init__(self, name, fav_color):
         self.name = name
         self.fav_color = fav_color
-
+        
     def __str__(self):
-        if self.fav_color == "blue":
+        contains_num = any(map(str.isdigit, self.name))
+        if contains_num:
+            return f"Please enter your name"
+        contains_num = any(map(str.isdigit, self.fav_color))
+        if contains_num:
+            return f"Please enter a color"
+        if self.fav_color.lower() == "blue":
             return f"Hi {self.name} 😉! My favorite color is also blue! 🐬"
-        return f"Hi {self.name} 😉! I think {self.fav_color} is an awesome color 🎨!"
+        return f"Hi {self.name} 😉! I think {self.fav_color.lower()} is an awesome color 🎨!"
 
 
 # Forming a repeatable stack structure
@@ -25,7 +31,7 @@ class Stack:
         self.abc = abc
 
     def move_piece(self):
-        row, col = input("Please tell the host your move in row#,col# format. ").split(',')]
+        row, col = input("Please tell the host your move in row#,col# format. ").split(',')
         if not -1 < int(row) < 5 or not -1 < int(col) < 5:
             self.move_piece()
         else:
@@ -79,7 +85,7 @@ class GobletPlayer(Player):
 p1name, p1fav, p1col = input("Player 1: Enter your name, favorite color, and piece color (White/Black) separated by spaces: ").split()
 player1 = GobletPlayer(p1name, p1fav, p1col)
 print(player1)
-p2name, p2fav, p2col = input("Player 2: Enter your name, favorite color, and piece color (White/BlackJ) separated by spaces: ").split()
+p2name, p2fav, p2col = input("Player 2: Enter your name, favorite color, and piece color (White/Black) separated by spaces: ").split()
 player2 = GobletPlayer(p2name, p2fav, p2col)
 print(player2)
 # Only checks if the last character is the number 1 or not because 1 and 2 are the only options
