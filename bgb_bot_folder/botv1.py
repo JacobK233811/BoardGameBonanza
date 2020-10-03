@@ -1,4 +1,4 @@
-# bot.py
+# botv1.py
 import os
 import random
 import time
@@ -6,6 +6,12 @@ import time
 import discord
 from dotenv import load_dotenv
 from discord.ext import commands
+
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
+
+bot = commands.Bot(command_prefix='!')
 
 # A complete class definition code follows:
 bot_fav_color = "blue"
@@ -46,7 +52,7 @@ class Stack:
 
 
 # To give the player 3 stacks of 4 pieces and identify whether they are playing as white or black
-class GobletPlayer(Player):
+class GobbletPlayer(Player):
     def __init__(self, name, fav_color, wb):
         self.color = wb
         self.stack_a = Stack(name + '_a')
@@ -82,19 +88,14 @@ class GobletPlayer(Player):
             self.choose_stack()
 
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
 
-bot = commands.Bot(command_prefix='!')
-
-# @client.event
-# async def on_ready():
-#     guild = discord.utils.find(lambda g: g.name == GUILD, client.guilds)
-#     print(
-#         f'{client.user} is connected to the following guild:\n'
-#         f'{guild.name}(id: {guild.id})'
-#     )
+@bot.event
+async def on_ready():
+    guild = discord.utils.find(lambda g: g.name == GUILD, bot.guilds)
+    print(
+        f'{bot.user} is connected to the following guild:\n'
+        f'{guild.name}(id: {guild.id})'
+    )
 
 
 @bot.event
@@ -105,41 +106,41 @@ async def on_member_join(member):
     )
 
 
+# @bot.event
+# async def on_message(message):
+#     if message.author != bot.user:
+#         if message.content[:7] == 'player1':
+
+#             name, fav, col = message.content[8:].split(' ')
+#             player1 = GobbletPlayer(name, fav, col)
+#             await message.channel.send(player1)
+#         elif message.content[:7] == 'player2':
+#             name, fav, col = message.content[8:].split(' ')
+#             player2 = GobbletPlayer(name, fav, col)
+#             await message.channel.send(player2)
+#     else:
+#         if message.content == 'raise-exception':
+#             raise discord.DiscordException
+
 @bot.event
 async def on_message(message):
-    if message.author != bot.user:
+    if message.author == bot.user or message.content[0] == '!':
+        pass
+    else:
         if message.content[:7] == 'player1':
-            player1 = GobletPlayer(message.content[8:].split())
+            name, fav, col = message.content[8:].split()
+            player1 = GobbletPlayer(name, fav, col)
             await message.channel.send(player1)
         elif message.content[:7] == 'player2':
-            player2 = GobletPlayer(message.content[8:].split())
+            name, fav, col = message.content[8:].split()
+            player2 = GobbletPlayer(name, fav, col)
             await message.channel.send(player2)
-    else:
-        if 'Move to player set-up.' in message.content:
-            response = "Players: Enter your name, favorite color, and piece color (White/Black) separated by spaces and preceded by the word player#: "
-            await message.channel.send(response)
-        elif message.content == 'raise-exception':
-            raise discord.DiscordException
-
-
-@bot.command(name='99')
-async def nine_nine(ctx):
-    brooklyn_99_quotes = [
-        'I\'m the human form of the 💯 emoji.',
-        'Bingpot!',
-        (
-            'Cool. Cool cool cool cool cool cool cool, '
-            'no doubt no doubt no doubt no doubt.'
-        ),
-    ]
-
-    response = random.choice(brooklyn_99_quotes)
-    await ctx.send(response)
-
-
-@bot.command(name='Gobblet')
-async def game_start(ctx):
-    response = """Get ready to play Gobblet!
+        elif message.content[:4] == "host":
+            host_name = message.content.split()[1]
+            await message.channel.send(host_name + " is the host.")
+            
+        elif message.content[:8] == "!Gobblet":
+            response = """Get ready to play Gobblet!
     \nYour goal in Gobblet Gobblers is to place four of your pieces in a horizontal, vertical or diagonal row. 
 Your pieces can stack on top of each other and they start the game nested, off the board. 
 On a turn, you either play one exposed piece from your three off-the-board piles or move one piece on the board to any other spot on the board where it fits. 
@@ -148,10 +149,58 @@ A larger piece can cover any smaller piece.
 Your memory is tested as you try to remember which color one of your larger pieces is covering before you move it. 
 As soon as a player has four like-colored pieces in a row, he wins — except in one case: 
 If you lift your piece and reveal an opponent's piece that finishes a four-in-a-row, you don't immediately lose; 
-you can't return the piece to its starting location, but if you can place it over one of the opponent's two other pieces in that row, the game continues.
+you can't return the piece to its starting location, but if you can place it over one of the opponent's three other pieces in that row, the game continues.
 
-For this Discord bot, players use stack z to designate a move of a piece already on the board.\n
-    """ + "\nMove to player set-up."
-    await ctx.send(response)
+For this Discord bot, players use stack z to designate a move of a piece already on the board. Command !quit will end the game.\n
+    """ + "\nMove to player set-up." + "\n\nFollow the instructions and type out !GoPlay when ready to start playing 😊 \nPlayers: Enter your name, favorite color, and piece color (White/Black) separated by spaces and preceded by the word player#: "
+            await message.channel.send(response)
+
+        elif message.content[:7] == "!GoPlay":
+            response = """The game is starting! Every turn consists of three parts:
+    1. Host sends the game picture 📷
+    2. Player states their move using message 'stack (a/b/c/z)'
+    3. Host makes the move on the actual board
+    
+    Players repeat this framework until the game is over!"""
+            await message.channel.send(response)
+
+
+
+# @bot.command(name='99')
+# async def nine_nine(ctx):
+#     brooklyn_99_quotes = [
+#         'I\'m the human form of the 💯 emoji.',
+#         'Bingpot!',
+#         (
+#             'Cool. Cool cool cool cool cool cool cool, '
+#             'no doubt no doubt no doubt no doubt.'
+#         ),
+#     ]
+
+#     response = random.choice(brooklyn_99_quotes)
+#     await ctx.send(response)
+
+
+# @bot.command(name='Gobblet')
+# async def game_start(ctx):
+#     response = """Get ready to play Gobblet!
+#     \nYour goal in Gobblet Gobblers is to place four of your pieces in a horizontal, vertical or diagonal row. 
+# Your pieces can stack on top of each other and they start the game nested, off the board. 
+# On a turn, you either play one exposed piece from your three off-the-board piles or move one piece on the board to any other spot on the board where it fits. 
+# A larger piece can cover any smaller piece.
+
+# Your memory is tested as you try to remember which color one of your larger pieces is covering before you move it. 
+# As soon as a player has four like-colored pieces in a row, he wins — except in one case: 
+# If you lift your piece and reveal an opponent's piece that finishes a four-in-a-row, you don't immediately lose; 
+# you can't return the piece to its starting location, but if you can place it over one of the opponent's two other pieces in that row, the game continues.
+
+# For this Discord bot, players use stack z to designate a move of a piece already on the board.\n
+#     """ + "\nMove to player set-up." + "\n\nPlayers: Enter your name, favorite color, and piece color (White/Black) separated by spaces and preceded by the word player#: "
+#     await ctx.send(response)
+
+# @bot.command(name='player1')
+# async def game_start(ctx):
+    
+#     await ctx.send(response)
 
 bot.run(TOKEN)
